@@ -1,0 +1,237 @@
+body {
+    /* font-family: "Arial", sans-serif; */
+    font-family: "Galindo", sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+    padding-top: 50px;
+}
+
+#app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    background-color: #ec1c24;
+    color: #fff;
+    padding: 0px 0;
+    height: 47px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+    position: fixed;
+    top: 0; 
+    left: 0; 
+}
+
+.logo {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin-right: 20px; /* Stały odstęp między elementami */
+}
+
+nav ul li {
+    margin-left: 10px; /* Odstęp między elementami */
+    position: static;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+}
+
+
+.user-actions p {
+    margin-right: 20px;
+}
+
+.user-actions a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.section-divider {
+    border-bottom: 2px solid #e74c3c;
+    margin: 20px 0;
+}
+.rectangle {
+width: 1000px;
+height: 78px;
+background-color: #ec1c24; 
+color: #fff; 
+text-align: center;
+line-height: 27px; 
+border-radius: 10px; 
+margin: 0 auto; 
+margin-top: 10px; 
+font-family: Arial, sans-serif; 
+font-size: 15px; 
+}
+
+.text {
+font-family: "Arial Black";
+font-size: 20px;
+display: block;
+margin-top: 1px; 
+}
+.radio-container {
+    display: flex;
+    justify-content: flex-end; /* Wyśrodkuj elementy na końcu kontenera */
+    margin-right: 20px; /* Przesunięcie całego kontenera w prawo */
+}
+
+.radio-container label {
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+    margin-right: 10px;
+    background-color: #f1c40f;
+    border: 1px solid #f1c40f;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 30px;
+    color: #000000;
+    cursor: pointer;
+}
+
+.radio-container input[type="radio"] {
+    display: none;
+}
+
+.radio-container input[type="radio"]:checked + label {
+    background-color: #eead22;
+}
+
+.bet {
+background-color: #ffffff; 
+border-radius: 10px; 
+padding: 10px; 
+margin-bottom: 20px;
+}
+.submit-button {
+background-color: #f1c40f;
+font-family: "Galindo", sans-serif;
+color: rgb(0, 0, 0); 
+padding: 5px 20px; 
+border: none; 
+border-radius: 8px; 
+cursor: pointer; 
+}
+.amount-input {
+width: 20%; 
+padding: 10px; 
+box-sizing: border-box; 
+border: 2px solid #ccc; 
+border-radius: 4px;
+margin-bottom: 10px;
+}
+h1 {
+text-align: center;
+font-size: 36px;
+color: #ffffff;
+}
+#add-bet-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+}
+
+#add-bet-form input[type="text"],
+#add-bet-form select {
+    font-family: "Galindo", sans-serif;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#add-bet-form button {
+    font-family: "Galindo", sans-serif;
+    width: 100%;
+    padding: 10px;
+    background-color: #f1c40f;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#add-bet-form button:hover {
+    background-color: #eead22;
+}
+.official-labels {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center; /* Wycentrowanie w poziomie */
+}
+
+.label {
+    font-size: 10px;
+    margin: 0 10px; /* Ustawienie ujemnego marginesu poziomego, aby zbliżyć etykiety */
+    text-align: center; /* Wycentrowanie tekstu wewnątrz etykiety */
+}
+
+.help-button {
+    text-align: center;
+}
+
+.help-button button {
+    margin-top: 15px;
+    background-color: black;
+    color: white;
+    border: 2px solid black;
+    border-radius: 10px; /* Dodaj zaokrąglenie rogów */
+    padding: 6px 20px; /* Dostosuj odstępy wewnętrzne */
+    cursor: pointer;
+    font-size: 11px;
+}
+
+
+
+.gambling-warning {
+    margin-top: 20px; /* odstęp od guzika */
+    text-align: center; /* wyśrodkowanie tekstu */
+    color: grey; /* kolor szary */
+    font-size: 9px; /* mniejsza czcionka */
+}
+.gambling {
+    margin-top: 20px; /* odstęp od guzika */
+    text-align: center; /* wyśrodkowanie tekstu */
+    color: grey; /* kolor szary */
+    font-size: 9px; /* mniejsza czcionka */
+}
+.costam {
+    margin-top: 20px; /* odstęp od guzika */
+    text-align: center; /* wyśrodkowanie tekstu */
+    color: rgb(39, 37, 37); /* kolor szary */
+    font-size: 9px; 
+}
+.wersja {
+    margin-top: 20px; /* odstęp od guzika */
+    text-align: center; /* wyśrodkowanie tekstu */
+    color: grey;
+    font-size: 9px; 
+}

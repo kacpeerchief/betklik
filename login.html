@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Logowanie</title>
+        <link rel="icon" type="image/x-icon" href="obrazy/ikona.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Galindo&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/loginstyle.css">
+    </head>
+    <body>
+        <div id="login">
+            <h2>Zaloguj się</h2>
+            <form id="loginForm" action="" method="post">
+                <label for="username">Nazwa użytkownika:</label>
+                <input id="username" type="text" name="username" required />
+
+                <label for="password">Hasło:</label>
+                <input id="password" type="password" name="password" required />
+
+                <button type="submit">Zaloguj się</button>
+                <p>Nie masz konta? <a href="register.html">Zarejestruj się</a></p>
+            </form>
+            <script>
+                document.getElementById("loginForm").addEventListener("submit", function (event) {
+                    event.preventDefault();
+
+                    const username = document.getElementById("username").value;
+                    const password = document.getElementById("password").value;
+
+                    const formData = {
+                        username: username,
+                        password: password,
+                    };
+
+                    fetch("api/login.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(formData),
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                document.cookie = `token=${data.token}; expires=${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toUTCString()}; path=/`;
+                                alert("Logowanie zakończone sukcesem");
+                                window.location.href = "index.html";
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .catch((error) => console.error("Błąd:", error));
+                });
+            </script>
+        </div>
+    </body>
+</html>
