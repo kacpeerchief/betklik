@@ -5,6 +5,9 @@ body {
     margin: 0;
     padding: 0;
     padding-top: 50px;
+    background-image: url('/esz/background1.png'); 
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 #app {
@@ -25,6 +28,7 @@ header {
     position: fixed;
     top: 0; 
     left: 0; 
+    z-index: 1000;
 }
 
 .logo {
@@ -35,7 +39,7 @@ header {
 nav ul {
     list-style: none;
     display: flex;
-    margin-right: 20px; /* Stały odstęp między elementami */
+    margin-left: 42px; /* Stały odstęp między elementami */
 }
 
 nav ul li {
@@ -71,25 +75,26 @@ nav ul li a {
     margin: 20px 0;
 }
 .rectangle {
-width: 1000px;
-height: 78px;
-background-color: #ec1c24; 
-color: #fff; 
-text-align: center;
-line-height: 27px; 
-border-radius: 10px; 
-margin: 0 auto; 
-margin-top: 10px; 
-font-family: Arial, sans-serif; 
-font-size: 15px; 
+    width: 1000px;
+    height: 78px;
+    background-color: #ec1c24; 
+    color: #fff; 
+    text-align: center;
+    border-radius: 10px; 
+    margin: 0 auto; 
+    margin-top: 10px; 
+    font-family: Arial, sans-serif; 
+    font-size: 15px; 
 }
 
 .text {
-font-family: "Arial Black";
-font-size: 20px;
-display: block;
-margin-top: 1px; 
+    font-family: "Arial Black";
+    font-size: 23px;
+    display: block;
+    margin: 2; /* Usuń marginesy */
+    line-height: 25px; /* Ustaw mniejszy line-height */
 }
+
 .radio-container {
     display: flex;
     justify-content: flex-end; /* Wyśrodkuj elementy na końcu kontenera */
@@ -184,6 +189,7 @@ color: #ffffff;
 }
 .official-labels {
     margin-top: 40px;
+    
     display: flex;
     justify-content: center; /* Wycentrowanie w poziomie */
 }
@@ -214,24 +220,45 @@ color: #ffffff;
 .gambling-warning {
     margin-top: 20px; /* odstęp od guzika */
     text-align: center; /* wyśrodkowanie tekstu */
-    color: grey; /* kolor szary */
+    color: rgb(219, 218, 218); /* kolor szary */
     font-size: 9px; /* mniejsza czcionka */
 }
 .gambling {
     margin-top: 20px; /* odstęp od guzika */
     text-align: center; /* wyśrodkowanie tekstu */
-    color: grey; /* kolor szary */
+    color: rgb(219, 218, 218); /* kolor szary */
     font-size: 9px; /* mniejsza czcionka */
 }
 .costam {
     margin-top: 20px; /* odstęp od guzika */
     text-align: center; /* wyśrodkowanie tekstu */
-    color: rgb(39, 37, 37); /* kolor szary */
+    color: rgb(219, 218, 218);   /* kolor szary */
     font-size: 9px; 
 }
 .wersja {
     margin-top: 20px; /* odstęp od guzika */
     text-align: center; /* wyśrodkowanie tekstu */
-    color: grey;
+    color: rgb(219, 218, 218);
     font-size: 9px; 
+}
+.official {
+    color: rgb(219, 218, 218);
+}
+.radio-container label {
+    position: relative;
+}
+
+.radio-container label::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -35px; /* Zwiększona odległość linii od label */
+    width: 100%; /* Zmniejszona długość linii */
+    height: 4px; /* Grubość linii */
+    background-color: gray; /* Domyślny kolor linii */
+    border-radius: 2px; /* Dodaj zaokrąglenia */
+}
+
+.radio-container input:checked + label::after {
+    background-color: green; /* Kolor linii, gdy radio jest zaznaczone */
 }

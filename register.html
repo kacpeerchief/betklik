@@ -14,18 +14,21 @@
         <div id="register">
             <h2>Zarejestruj się</h2>
             <form id="registrationForm" action="" method="post">
-                <label for="username">Nazwa użytkownika:</label>
-                <input id="username" type="text" name="username" required />
-
-                <label for="password">Hasło:</label>
-                <input id="password" type="password" name="password" required />
+                <div class="input-group">
+                    <input class="form-control" type="text" name="username" id="username" required="required" placeholder="Ihr Name">
+                    <label for="username">Nazwa uzytkownika</label>
+                  </div>
+                    <div class="input-group">
+                    <input class="form-control" id="password" type="password" name="password" required="required" placeholder="Ihr Name">
+                    <label for="password">Haslo</label>
+                  </div>
 
                 <!-- <label for="is_admin">Administrator:</label>
                 <input id="is_admin" type="checkbox" id="is_admin" name="is_admin" value="1" /> -->
 
                 <button type="submit">Zarejestruj się</button>
             </form>
-            <p>Masz już konto? <a href="login.html">Zaloguj się</a></p>
+            <p>Nie masz konta? <a href="login.html" class="button">Zaloguj się</a></p>
 
             <script>
                 document.getElementById("registrationForm").addEventListener("submit", function (event) {

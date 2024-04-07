@@ -11,17 +11,25 @@
         <link rel="stylesheet" href="css/loginstyle.css">
     </head>
     <body>
+        <div style="text-align: center; margin-top: 30px;">
+            <img src="obrazy/betklikremoved.png" alt="Logo" style="width: 260px;" />
+          </div>
+                 
         <div id="login">
             <h2>Zaloguj się</h2>
             <form id="loginForm" action="" method="post">
-                <label for="username">Nazwa użytkownika:</label>
-                <input id="username" type="text" name="username" required />
-
-                <label for="password">Hasło:</label>
-                <input id="password" type="password" name="password" required />
+                <div class="input-group">
+                    <input class="form-control" type="text" name="username" id="username" required="required" placeholder="Ihr Name">
+                    <label for="username">Nazwa uzytkownika</label>
+                  </div>
+                    <div class="input-group">
+                    <input class="form-control" id="password" type="password" name="password" required="required" placeholder="Ihr Name">
+                    <label for="password">Haslo</label>
+                  </div>
 
                 <button type="submit">Zaloguj się</button>
-                <p>Nie masz konta? <a href="register.html">Zarejestruj się</a></p>
+                <p>Nie masz konta? <a href="register.html" class="button">Zarejestruj się</a></p>
+                
             </form>
             <script>
                 document.getElementById("loginForm").addEventListener("submit", function (event) {

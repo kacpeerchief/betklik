@@ -1,6 +1,7 @@
 Walidacja w php
 Potem jak api zwraca jakieś błędy walidacyjne to wyświetlasz je na stronie w js
-
+Zrobic ze nie mozna obstawic po zakonczeniu zakladu
+Zmienic css/tło
 https://codepen.io/suleymantekin/pen/pmGERq
 https://codepen.io/Liombe/pen/rNVdqJz
 https://getcssscan.com/css-buttons-examples

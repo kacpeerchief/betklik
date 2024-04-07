@@ -328,6 +328,57 @@ class User {
     //     }
     // }
     
+    // public function updateOdds(int $betId, string $selectedResult) {
+    //     $sql = "SELECT team1_odds, team2_odds, draw_odds FROM bets WHERE bet_id = ?";
+    //     $stmt = $this->conn->prepare($sql);
+    //     $stmt->bind_param("i", $betId);
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
+    //     $row = $result->fetch_assoc();
+    //     $team1_odds = $row['team1_odds'];
+    //     $team2_odds = $row['team2_odds'];
+    //     $draw_odds = $row['draw_odds']; // Pobierz kurs dla remisu
+    
+    //     $sql = "SELECT COUNT(*) as total FROM user_bets WHERE bet_id = ?";
+    //     $stmt = $this->conn->prepare($sql);
+    //     $stmt->bind_param("i", $betId);
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
+    //     $row = $result->fetch_assoc();
+    //     $totalBets = $row['total'];
+    
+    //     // Ustalanie procentowego zmniejszenia/zwiększenia kursów
+    //     $percentageChange = 0.05; // Zakładamy 5% zmiany kursu
+    
+    //     // Aktualizacja kursów w zależności od wyniku
+    //     if ($selectedResult == "Druzyna 1") {
+    //         // Oblicz nowe kursy dla drużyny 1, drużyny 2 i remisu
+    //         $newOdds1 = $team1_odds * (1 - $percentageChange);
+    //         $newOdds2 = $team2_odds * (1 + $percentageChange);
+    //         $newDrawOdds = $draw_odds * (1 + $percentageChange); // Zwiększ kurs remisu
+    //         $updateSql = "UPDATE bets SET team1_odds = ?, team2_odds = ?, draw_odds = ? WHERE bet_id = ?";
+    //     } elseif ($selectedResult == "Druzyna 2") {
+    //         // Oblicz nowe kursy dla drużyny 1, drużyny 2 i remisu
+    //         $newOdds1 = $team1_odds * (1 + $percentageChange);
+    //         $newOdds2 = $team2_odds * (1 - $percentageChange);
+    //         $newDrawOdds = $draw_odds * (1 - $percentageChange); // Zmniejsz kurs remisu
+    //         $updateSql = "UPDATE bets SET team1_odds = ?, team2_odds = ?, draw_odds = ? WHERE bet_id = ?";
+    //     } elseif ($selectedResult == "Remis") {
+    //         // Oblicz nowe kursy dla drużyny 1, drużyny 2 i remisu
+    //         $newOdds1 = $team1_odds * (1 - $percentageChange);
+    //         $newOdds2 = $team2_odds * (1 - $percentageChange);
+    //         $newDrawOdds = $draw_odds * (1 + $percentageChange); // Zwiększ kurs remisu
+    //         $updateSql = "UPDATE bets SET team1_odds = ?, team2_odds = ?, draw_odds = ? WHERE bet_id = ?";
+    //     }
+    
+    //     // Zapisz nowe kursy do bazy danych
+    //     if (!empty($updateSql)) {
+    //         $stmt = $this->conn->prepare($updateSql);
+    //         $stmt->bind_param("dddi", $newOdds1, $newOdds2, $newDrawOdds, $betId);
+    //         $stmt->execute();
+    //     }
+    // }
+    
     public function updateOdds(int $betId, string $selectedResult) {
         $sql = "SELECT team1_odds, team2_odds, draw_odds FROM bets WHERE bet_id = ?";
         $stmt = $this->conn->prepare($sql);
@@ -337,49 +388,36 @@ class User {
         $row = $result->fetch_assoc();
         $team1_odds = $row['team1_odds'];
         $team2_odds = $row['team2_odds'];
-        $draw_odds = $row['draw_odds']; // Pobierz kurs dla remisu
+        $draw_odds = $row['draw_odds'];
     
-        $sql = "SELECT COUNT(*) as total FROM user_bets WHERE bet_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $betId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $totalBets = $row['total'];
-    
-        // Ustalanie procentowego zmniejszenia/zwiększenia kursów
-        $percentageChange = 0.05; // Zakładamy 5% zmiany kursu
-    
-        // Aktualizacja kursów w zależności od wyniku
+        // Oblicz nowe kursy na podstawie wybranego wyniku i zmiany o 0.05%
+        $percentageChange = 0.05; // 0.05%
         if ($selectedResult == "Druzyna 1") {
-            // Oblicz nowe kursy dla drużyny 1, drużyny 2 i remisu
+            // Jeśli użytkownik obstawił na drużynę 1, zmniejsz kurs dla drużyny 1, a zwiększ kursy dla drużyny 2 i remisu
             $newOdds1 = $team1_odds * (1 - $percentageChange);
             $newOdds2 = $team2_odds * (1 + $percentageChange);
-            $newDrawOdds = $draw_odds * (1 + $percentageChange); // Zwiększ kurs remisu
-            $updateSql = "UPDATE bets SET team1_odds = ?, team2_odds = ?, draw_odds = ? WHERE bet_id = ?";
+            $newDrawOdds = $draw_odds * (1 + $percentageChange);
         } elseif ($selectedResult == "Druzyna 2") {
-            // Oblicz nowe kursy dla drużyny 1, drużyny 2 i remisu
-            $newOdds1 = $team1_odds * (1 + $percentageChange);
-            $newOdds2 = $team2_odds * (1 - $percentageChange);
-            $newDrawOdds = $draw_odds * (1 - $percentageChange); // Zmniejsz kurs remisu
-            $updateSql = "UPDATE bets SET team1_odds = ?, team2_odds = ?, draw_odds = ? WHERE bet_id = ?";
-        } elseif ($selectedResult == "Remis") {
-            // Oblicz nowe kursy dla drużyny 1, drużyny 2 i remisu
+            // Jeśli użytkownik obstawił na drużynę 2, zwiększ kurs dla drużyny 1, a zmniejsz kursy dla drużyny 2 i remisu
             $newOdds1 = $team1_odds * (1 - $percentageChange);
-            $newOdds2 = $team2_odds * (1 - $percentageChange);
-            $newDrawOdds = $draw_odds * (1 + $percentageChange); // Zwiększ kurs remisu
-            $updateSql = "UPDATE bets SET team1_odds = ?, team2_odds = ?, draw_odds = ? WHERE bet_id = ?";
+            $newOdds2 = $team2_odds * (1 + $percentageChange);
+            $newDrawOdds = $draw_odds * (1 + $percentageChange);
+        } elseif ($selectedResult == "Remis") {
+            // Jeśli użytkownik obstawił na remis, zmniejsz kursy dla drużyny 1 i drużyny 2, a zwiększ kurs dla remisu
+            $newOdds1 = $team1_odds * (1 + $percentageChange);
+            $newOdds2 = $team2_odds * (1 + $percentageChange);
+            $newDrawOdds = $draw_odds * (1 - $percentageChange);
         }
+        $newOdds1 = max($newOdds1, 1.01);
+        $newOdds2 = max($newOdds2, 1.01);
+        $newDrawOdds = max($newDrawOdds, 1.01);
     
-        // Zapisz nowe kursy do bazy danych
-        if (!empty($updateSql)) {
-            $stmt = $this->conn->prepare($updateSql);
-            $stmt->bind_param("dddi", $newOdds1, $newOdds2, $newDrawOdds, $betId);
-            $stmt->execute();
-        }
+        // Aktualizuj kursy w bazie danych
+        $sql = "UPDATE bets SET team1_odds = ?, team2_odds = ?, draw_odds = ? WHERE bet_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("dddi", $newOdds1, $newOdds2, $newDrawOdds, $betId);
+        $stmt->execute();
     }
-    
-    
 
     public function getUsername(): string | null {
         if (!$this->isLoggedIn()) return null;
@@ -548,7 +586,9 @@ class User {
         if (empty($event_name) || empty($event_name2)) {
             return false;
         }
-    
+        $team1_odds = rand(250, 750) / 100; // Losuj kurs dla drużyny 1 z przedziału 2.50 - 7.50
+        $team2_odds = rand(250, 750) / 100; // Losuj kurs dla drużyny 2 z przedziału 2.50 - 7.50
+        $draw_odds = rand(250, 750) / 100;
         // Pobranie ID użytkownika z tokena
         $user_id = $this->getUserIdFromToken($this->token); 
     
@@ -558,14 +598,12 @@ class User {
         $bet_type = htmlspecialchars($bet_type, ENT_QUOTES);
     
         // Wstawienie zakładu do bazy danych
-        $sql = "INSERT INTO bets (user_id, event_name, event_name2, bet_type) VALUES (?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("isss", $user_id, $event_name, $event_name2, $bet_type);
-    
-        // Wykonanie zapytania i zwrócenie rezultatu
+        $sql = "INSERT INTO bets (event_name, event_name2, bet_type, team1_odds, team2_odds, draw_odds) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("sssddd", $event_name, $event_name2, $bet_type, $team1_odds, $team2_odds, $draw_odds);
         return $stmt->execute();
     }
-    
+    //dodano losowosc kursow | tutaj trzeba usunac rand i dodac w bazie danych default 10
 
 }
 ?>
