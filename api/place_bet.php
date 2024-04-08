@@ -14,14 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $token = $data["token"];
 
     $user->setToken($token);
-    $success = $user->placeBet($betId, $result, $betAmount, $eventName, $eventName2); // Zmodyfikuj
+    $success = $user->placeBet($betId, $result, $betAmount, $eventName, $eventName2);
 
     if ($success) {
-        // Pobierz identyfikator użytkownika
         $userId = $user->getUserIdFromToken($token);
 
-        // Zaktualizuj stan konta użytkownika
-        $user->updateUserBalance($userId, -$betAmount); // Odjęcie kwoty zakładu od konta
+        $user->updateUserBalance($userId, -$betAmount);
 
         echo json_encode(['success' => true]);
     } else {

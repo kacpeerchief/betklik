@@ -119,14 +119,13 @@ color: #666;
     background-color: #ec1c24;
     color: white;
     border: none;
-    border-radius: 8px; /* Zaokrąglenie rogów */
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-/* Styl dla przycisku wypłaty po najechaniu myszką */
 .pay-out-button:hover {
-    background-color: #CC0000; /* Ciemniejszy odcień czerwonego po najechaniu myszką */
+    background-color: #CC0000;
 }
 .addbutton {
     font-family: "Galindo", sans-serif;
@@ -134,12 +133,12 @@ color: #666;
     background-color: #ec1c24;
     color: white;
     border: none;
-    border-radius: 8px; /* Zaokrąglenie rogów */
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 .addbutton:hover {
-    background-color: #CC0000; /* Ciemniejszy odcień czerwonego po najechaniu myszką */
+    background-color: #CC0000;
 }
 header {
     background-color: #ec1c24;

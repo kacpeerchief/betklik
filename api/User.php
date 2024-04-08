@@ -23,14 +23,11 @@ class User {
     }
     
     public function endBet($betId, $result, $token) {
-        // Ustawienie tokena użytkownika
         $this->setToken($token);
     
-        // Sprawdzenie czy użytkownik jest administratorem
         $isAdmin = $this->isAdmin();
     
         if ($isAdmin) {
-            // Jeśli użytkownik jest administratorem, wykonaj zakończenie zakładu
             $sqlUpdate = "UPDATE bets SET result = ? WHERE bet_id = ?";
             $stmtUpdate = $this->conn->prepare($sqlUpdate);
             $stmtUpdate->bind_param("si", $result, $betId);
@@ -124,7 +121,6 @@ class User {
     }
     
     public function updateUserBalance($userId, $amount) {
-        // Pobierz aktualny stan konta użytkownika
         $sql = "SELECT balance FROM users WHERE user_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $userId);
@@ -133,20 +129,17 @@ class User {
         $row = $result->fetch_assoc();
         $currentBalance = $row['balance'];
 
-        // Zaktualizuj stan konta o nową kwotę
         $newBalance = $currentBalance + $amount;
 
-        // Zapisz nowy stan konta do bazy danych
         $sql = "UPDATE users SET balance = ? WHERE user_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("di", $newBalance, $userId);
         $stmt->execute();
 
-        // Sprawdź, czy aktualizacja się powiodła
         if ($stmt->affected_rows > 0) {
-            return true; // Zwróć true jeśli aktualizacja się powiodła
+            return true;
         } else {
-            return false; // Zwróć false jeśli aktualizacja nie powiodła się
+            return false;
         }
     }
 
@@ -157,7 +150,6 @@ class User {
     
         $user_id = $this->getUserIdFromToken($this->token);
     
-        // Pobierz kursy z bets
         $sql = "SELECT team1_odds, team2_odds, draw_odds FROM bets WHERE bet_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $betId);
@@ -184,7 +176,6 @@ class User {
         $sql = "INSERT INTO user_bets (user_id, bet_id, event_name, event_name2, result, bet_amount, odds) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         
-        // Ustawienie kursu z bets do user_bets w zależności od wybranego wyniku
         $odds = 0;
         if ($selectedResult == "Druzyna 1") {
             $odds = $team1_odds;
@@ -390,20 +381,16 @@ class User {
         $team2_odds = $row['team2_odds'];
         $draw_odds = $row['draw_odds'];
     
-        // Oblicz nowe kursy na podstawie wybranego wyniku i zmiany o 0.05%
-        $percentageChange = 0.05; // 0.05%
+        $percentageChange = 0.05;
         if ($selectedResult == "Druzyna 1") {
-            // Jeśli użytkownik obstawił na drużynę 1, zmniejsz kurs dla drużyny 1, a zwiększ kursy dla drużyny 2 i remisu
             $newOdds1 = $team1_odds * (1 - $percentageChange);
             $newOdds2 = $team2_odds * (1 + $percentageChange);
             $newDrawOdds = $draw_odds * (1 + $percentageChange);
         } elseif ($selectedResult == "Druzyna 2") {
-            // Jeśli użytkownik obstawił na drużynę 2, zwiększ kurs dla drużyny 1, a zmniejsz kursy dla drużyny 2 i remisu
             $newOdds1 = $team1_odds * (1 - $percentageChange);
             $newOdds2 = $team2_odds * (1 + $percentageChange);
             $newDrawOdds = $draw_odds * (1 + $percentageChange);
         } elseif ($selectedResult == "Remis") {
-            // Jeśli użytkownik obstawił na remis, zmniejsz kursy dla drużyny 1 i drużyny 2, a zwiększ kurs dla remisu
             $newOdds1 = $team1_odds * (1 + $percentageChange);
             $newOdds2 = $team2_odds * (1 + $percentageChange);
             $newDrawOdds = $draw_odds * (1 - $percentageChange);
@@ -412,7 +399,6 @@ class User {
         $newOdds2 = max($newOdds2, 1.01);
         $newDrawOdds = max($newDrawOdds, 1.01);
     
-        // Aktualizuj kursy w bazie danych
         $sql = "UPDATE bets SET team1_odds = ?, team2_odds = ?, draw_odds = ? WHERE bet_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("dddi", $newOdds1, $newOdds2, $newDrawOdds, $betId);
@@ -476,12 +462,10 @@ class User {
     }
 
     public function register(string $username, string $password, int $is_admin): bool {
-        // Sprawdzenie, czy nazwa użytkownika i hasło nie są puste
         if (empty($username) || empty($password)) {
             return false;
         }
     
-        // Sprawdzenie, czy nazwa użytkownika już istnieje w bazie danych
         $checkUsername = "SELECT * FROM users WHERE username = ?";
         $stmt = $this->conn->prepare($checkUsername);
         $stmt->bind_param("s", $username);
@@ -492,11 +476,9 @@ class User {
             return false;
         }
         
-        // Zabezpieczenie przed atakami XSS
         $username = htmlspecialchars($username, ENT_QUOTES);
         $password = htmlspecialchars($password, ENT_QUOTES);
         
-        // Wstawianie użytkownika do bazy danych
         $sql = "INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ssi", $username, $password, $is_admin);
@@ -507,7 +489,6 @@ class User {
             return false;
         }
         
-        // Zapisanie tokenu do bazy danych
         $user_id = $this->conn->insert_id;
         $expiration_date = date('Y-m-d H:i:s', strtotime('+1 day'));
         $this->saveTokenToDatabase($user_id, $this->token, $expiration_date);
@@ -572,26 +553,22 @@ class User {
     public function addBet(string $event_name, string $event_name2, string $bet_type): bool {
         if (!$this->isAdmin()) return false;
         
-        // Trimowanie danych wejściowych
         $event_name = trim($event_name);
         $event_name2 = trim($event_name2);
     
-        // Sprawdzenie, czy dane nie są puste po trimowaniu
         if (empty($event_name) || empty($event_name2)) {
             return false;
         }
-        $team1_odds = rand(250, 750) / 100; // Losuj kurs dla drużyny 1 z przedziału 2.50 - 7.50
-        $team2_odds = rand(250, 750) / 100; // Losuj kurs dla drużyny 2 z przedziału 2.50 - 7.50
+        $team1_odds = rand(250, 750) / 100;
+        $team2_odds = rand(250, 750) / 100;
         $draw_odds = rand(250, 750) / 100;
-        // Pobranie ID użytkownika z tokena
+
         $user_id = $this->getUserIdFromToken($this->token); 
     
-        // Zabezpieczenie przed atakami XSS
         $event_name = htmlspecialchars($event_name, ENT_QUOTES);
         $event_name2 = htmlspecialchars($event_name2, ENT_QUOTES);
         $bet_type = htmlspecialchars($bet_type, ENT_QUOTES);
     
-        // Wstawienie zakładu do bazy danych
         $sql = "INSERT INTO bets (event_name, event_name2, bet_type, user_id, team1_odds, team2_odds, draw_odds) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ssssddd", $event_name, $event_name2, $bet_type, $user_id, $team1_odds, $team2_odds, $draw_odds);

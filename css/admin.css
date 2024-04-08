@@ -5,11 +5,11 @@
 
 .bet-container {
     text-align: center;
-    margin-top: 70px; /* Zwiększ margines górny */
+    margin-top: 70px;
     margin-bottom: 20px;
-    max-width: 70%; /* Ustaw maksymalną szerokość na 50% */
-    margin-left: auto; /* Wyrównaj do prawej */
-    margin-right: auto; /* Wyrównaj do lewej */
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
 
 }
 

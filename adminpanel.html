@@ -45,10 +45,9 @@
     .then(response => response.json())
     .then(data => {
         const betsContainer = document.getElementById("bets-container");
-        betsContainer.innerHTML = ""; // Wyczyść kontener z zakładami
+        betsContainer.innerHTML = "";
 
         data.forEach(bet => {
-            // Sprawdź czy zakład ma już ustawiony rezultat
             if (bet.result === null) {
                 const betDiv = document.createElement("div");
                 betDiv.classList.add("bet-container");
@@ -92,7 +91,7 @@
     .then(data => {
         if (data.success) {
             alert("Zakład zakończony pomyślnie");
-            fetchBets(); // Zaktualizuj listę zakładów po zakończeniu
+            fetchBets();
         } else {
             alert("Błąd podczas zakończania zakładu: " + data.message);
         }

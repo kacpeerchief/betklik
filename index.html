@@ -182,9 +182,9 @@
 
                         let adminLink = document.getElementById("admin-link");
                 if (window.data.isAdmin) {
-                    adminLink.style.display = "inline"; // Pokaż link do panelu administratora
+                    adminLink.style.display = "inline";
                 } else {
-                    adminLink.style.display = "none"; // Ukryj link do panelu administratora
+                    adminLink.style.display = "none";
                 }
                         // let displayWhenNotLogged = document.getElementById("displayWhenNotLogged");
                         // displayWhenNotLogged.style.display = "none";
@@ -245,7 +245,6 @@
                     return;
                 }
                 
-                // Kontynuuj proces składania zakładu
                 if (selectedResult) {
                     const result = selectedResult.value;
 
@@ -287,12 +286,11 @@
             </div>
         </div>        
         
-        <!-- Pomocny guzik -->
+
         <div class="help-button">
             <b><button>Potrzebujesz pomocy?</button></b>
         </div>
         
-        <!-- Zakaz uczestnictwa w grze hazardowej -->
         <div class="gambling-warning">
             <p>Zakaz uczestnictwa w grze hazardowej dla osób poniżej 18 roku życia.</p>
         </div>

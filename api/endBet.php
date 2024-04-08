@@ -10,7 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $betId = $data['betId'];
         $result = $data['result'];
 
-        // Sprawdzenie, czy zakład został już zakończony
         if ($user->isBetEnded($betId)) {
             $response = ["success" => false, "message" => "Ten zakład został już zakończony."];
         } else {
@@ -23,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $response = ["success" => false, "message" => "Metoda żądania nieprawidłowa"];
 }
 
-// Zwróć odpowiedź jako JSON
 header("Content-Type: application/json");
 echo json_encode($response);
 ?>
