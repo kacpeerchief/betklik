@@ -132,8 +132,8 @@ function generateBetHTML(bet, resultData) {
             let potentialWin = bet.odds * bet.bet_amount;
             betHTML += `<p class="bet-info">Możliwa wygrana: ${potentialWin}</p>`;
             
-            if (!bet.paid_out) { // Sprawdź czy zakład nie został jeszcze wypłacony
-                if (resultData.result === bet.result) { // Sprawdź czy wynik użytkownika jest zgodny z wynikiem zakładu
+            if (!bet.paid_out) { 
+                if (resultData.result === bet.result) { 
                     betHTML += `<button class="pay-out-button" onclick="payOut(${potentialWin}, ${bet.bet_id})">Wypłać</button>`;
                 } else {
                     betHTML += `<p class="bet-info">Nie wygrano</p>`;

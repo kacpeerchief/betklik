@@ -538,37 +538,31 @@ class User {
         }
     }
     public function payout($token, $amount) {
-        // Pobierz identyfikator użytkownika na podstawie tokenu
         $userId = $this->getUserIdFromToken($token);
     
-        // Pobierz aktualny stan konta użytkownika
         $sql = "SELECT balance FROM users WHERE user_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $userId);
         $stmt->execute();
         $result = $stmt->get_result();
     
-        // Sprawdź czy udało się pobrać stan konta użytkownika
         if ($row = $result->fetch_row()) {
             $balance = $row[0];
-    
-            // Oblicz nowy stan konta użytkownika po dodaniu kwoty
+
             $newBalance = $balance + $amount;
     
-            // Zaktualizuj stan konta użytkownika
             $sql = "UPDATE users SET balance = ? WHERE user_id = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("di", $newBalance, $userId);
             $stmt->execute();
     
-            // Sprawdź czy aktualizacja się powiodła
             if ($stmt->affected_rows > 0) {
-                return true; // Zwróć true jeśli wypłata się powiodła
+                return true;
             } else {
-                return false; // Zwróć false jeśli wypłata się nie powiodła
+                return false; 
             }
         } else {
-            return false; // Zwróć false jeśli nie udało się pobrać stanu konta użytkownika
+            return false; 
         }
     }
     
@@ -598,9 +592,9 @@ class User {
         $bet_type = htmlspecialchars($bet_type, ENT_QUOTES);
     
         // Wstawienie zakładu do bazy danych
-        $sql = "INSERT INTO bets (event_name, event_name2, bet_type, team1_odds, team2_odds, draw_odds) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("sssddd", $event_name, $event_name2, $bet_type, $team1_odds, $team2_odds, $draw_odds);
+        $sql = "INSERT INTO bets (event_name, event_name2, bet_type, user_id, team1_odds, team2_odds, draw_odds) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ssssddd", $event_name, $event_name2, $bet_type, $user_id, $team1_odds, $team2_odds, $draw_odds);
         return $stmt->execute();
     }
     //dodano losowosc kursow | tutaj trzeba usunac rand i dodac w bazie danych default 10

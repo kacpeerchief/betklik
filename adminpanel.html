@@ -38,46 +38,50 @@
         fetchBets();
 
         function fetchBets() {
-            fetch("api/getAllBets.php", {
-                method: "POST",
-                body: JSON.stringify({ token: token })
-            })
-            .then(response => response.json())
-            .then(data => {
-                const betsContainer = document.getElementById("bets-container");
-                betsContainer.innerHTML = ""; // Wyczyść kontener z zakładami
+    fetch("api/getAllBets.php", {
+        method: "POST",
+        body: JSON.stringify({ token: token })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const betsContainer = document.getElementById("bets-container");
+        betsContainer.innerHTML = ""; // Wyczyść kontener z zakładami
 
-                data.forEach(bet => {
-                    const betDiv = document.createElement("div");
-                    betDiv.classList.add("bet-container");
+        data.forEach(bet => {
+            // Sprawdź czy zakład ma już ustawiony rezultat
+            if (bet.result === null) {
+                const betDiv = document.createElement("div");
+                betDiv.classList.add("bet-container");
 
-                    const buttonsDiv = document.createElement("div");
-                    buttonsDiv.classList.add("button-container");
+                const buttonsDiv = document.createElement("div");
+                buttonsDiv.classList.add("button-container");
 
-                    const winButton = document.createElement("button");
-                    winButton.textContent = "Drużyna 1 wygrywa";
-                    winButton.addEventListener("click", () => endBet(bet.bet_id, 'Druzyna 1'));
-                    buttonsDiv.appendChild(winButton);
+                const winButton = document.createElement("button");
+                winButton.textContent = "Drużyna 1 wygrywa";
+                winButton.addEventListener("click", () => endBet(bet.bet_id, 'Druzyna 1'));
+                buttonsDiv.appendChild(winButton);
 
-                    const drawButton = document.createElement("button");
-                    drawButton.textContent = "Remis";
-                    drawButton.addEventListener("click", () => endBet(bet.bet_id, 'Remis'));
-                    buttonsDiv.appendChild(drawButton);
+                const drawButton = document.createElement("button");
+                drawButton.textContent = "Remis";
+                drawButton.addEventListener("click", () => endBet(bet.bet_id, 'Remis'));
+                buttonsDiv.appendChild(drawButton);
 
-                    const lossButton = document.createElement("button");
-                    lossButton.textContent = "Drużyna 2 wygrywa";
-                    lossButton.addEventListener("click", () => endBet(bet.bet_id, 'Druzyna 2'));
-                    buttonsDiv.appendChild(lossButton);
+                const lossButton = document.createElement("button");
+                lossButton.textContent = "Drużyna 2 wygrywa";
+                lossButton.addEventListener("click", () => endBet(bet.bet_id, 'Druzyna 2'));
+                buttonsDiv.appendChild(lossButton);
 
-                    betDiv.innerHTML = `
-                         <p class="bet-info">${bet.event_name} vs ${bet.event_name2}</p>
-                    `;
-                    betDiv.appendChild(buttonsDiv);
-                    betsContainer.appendChild(betDiv);
-                });
-            })
-            .catch(error => console.error("Błąd podczas pobierania zakładów:", error));
-        }
+                betDiv.innerHTML = `
+                    <p class="bet-info">${bet.event_name} vs ${bet.event_name2}</p>
+                `;
+                betDiv.appendChild(buttonsDiv);
+                betsContainer.appendChild(betDiv);
+            }
+        });
+    })
+    .catch(error => console.error("Błąd podczas pobierania zakładów:", error));
+}
+
 
         function endBet(betId, result) {
     fetch("api/endBet.php", {

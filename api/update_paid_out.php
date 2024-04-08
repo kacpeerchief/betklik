@@ -6,9 +6,9 @@ $user = new User();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
     $betId = $data['betId'];
-    $paidOutStatus = true; // Określamy stan wypłaty jako true
+    $paidOutStatus = true;
 
-    $success = $user->updatePaidOutStatus($betId, $paidOutStatus); // Przekazujemy drugi argument
+    $success = $user->updatePaidOutStatus($betId, $paidOutStatus);
 
     echo json_encode(["success" => $success]);
 }
