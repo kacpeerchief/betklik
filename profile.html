@@ -13,7 +13,7 @@
     <body>
         <header>
             <div class="logo">
-                <img src="/projekt2024/logo.png" alt="Logo" style="width: 160px" />
+                <img src="./obrazy/betklikremoved.png" alt="Logo" style="width: 160px" />
             </div>
             <nav>
                 <ul>
@@ -168,7 +168,7 @@ function payOut(amount, betId) {
     .then((data) => {
         if (data.success) {
             alert("Środki zostały wypłacone pomyślnie.");
-            updatePaidOutStatus(betId, true);
+            updatePaidOutStatus(betId);
             displayUserBets();
             window.location.reload();
             let payOutButton = document.getElementById("pay-out-button");
@@ -186,16 +186,13 @@ function payOut(amount, betId) {
     });
 }
 
-
-
-
 function updatePaidOutStatus(betId) {
     fetch("api/update_paid_out.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ betId: betId })
+        body: JSON.stringify({ betId: betId, token: window.token })
     })
     .then((response) => response.json())
     .then((data) => {
@@ -207,6 +204,7 @@ function updatePaidOutStatus(betId) {
         console.error("Błąd podczas aktualizacji statusu wypłaconego:", error);
     });
 }
+
 
 
         function getCookie(name) {

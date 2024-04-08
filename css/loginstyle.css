@@ -7,9 +7,10 @@ body {
 }
 body {
     font-family: "Galindo", sans-serif;
-    background-image: url('/esz/background1.png'); 
+    background-image: url('../obrazy/background1.png');
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 #login {
     width: 100%;

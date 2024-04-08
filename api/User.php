@@ -102,13 +102,13 @@ class User {
         return $stmt->execute();
     }
     
-    public function updatePaidOutStatus(int $betId, bool $paidOutStatus): bool {
-        $sql = "UPDATE user_bets SET paid_out = ? WHERE bet_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ii", $paidOutStatus, $betId);
+    // public function updatePaidOutStatus(int $betId, bool $paidOutStatus): bool {
+    //     $sql = "UPDATE user_bets SET paid_out = ? WHERE bet_id = ?";
+    //     $stmt = $this->conn->prepare($sql);
+    //     $stmt->bind_param("ii", $paidOutStatus, $betId);
         
-        return $stmt->execute();
-    }
+    //     return $stmt->execute();
+    // }
 
     
     public function isBetEnded($betId) {
@@ -381,14 +381,14 @@ class User {
         $team2_odds = $row['team2_odds'];
         $draw_odds = $row['draw_odds'];
     
-        $percentageChange = 0.05;
+        $percentageChange = 0.07;
         if ($selectedResult == "Druzyna 1") {
             $newOdds1 = $team1_odds * (1 - $percentageChange);
             $newOdds2 = $team2_odds * (1 + $percentageChange);
             $newDrawOdds = $draw_odds * (1 + $percentageChange);
         } elseif ($selectedResult == "Druzyna 2") {
-            $newOdds1 = $team1_odds * (1 - $percentageChange);
-            $newOdds2 = $team2_odds * (1 + $percentageChange);
+            $newOdds1 = $team1_odds * (1 + $percentageChange);
+            $newOdds2 = $team2_odds * (1 - $percentageChange);
             $newDrawOdds = $draw_odds * (1 + $percentageChange);
         } elseif ($selectedResult == "Remis") {
             $newOdds1 = $team1_odds * (1 + $percentageChange);
@@ -518,9 +518,15 @@ class User {
             return false;
         }
     }
-    public function payout($token, $amount) {
-        $userId = $this->getUserIdFromToken($token);
+    public function updatePaidOutStatus(int $betId, int $userId, bool $paidOutStatus): bool {
+        $sql = "UPDATE user_bets SET paid_out = ? WHERE bet_id = ? AND user_id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("iii", $paidOutStatus, $betId, $userId);
+        
+        return $stmt->execute();
+    }
     
+    public function payout(int $userId, float $amount): bool {
         $sql = "SELECT balance FROM users WHERE user_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $userId);
@@ -529,7 +535,6 @@ class User {
     
         if ($row = $result->fetch_row()) {
             $balance = $row[0];
-
             $newBalance = $balance + $amount;
     
             $sql = "UPDATE users SET balance = ? WHERE user_id = ?";
@@ -537,13 +542,9 @@ class User {
             $stmt->bind_param("di", $newBalance, $userId);
             $stmt->execute();
     
-            if ($stmt->affected_rows > 0) {
-                return true;
-            } else {
-                return false; 
-            }
+            return $stmt->affected_rows > 0;
         } else {
-            return false; 
+            return false;
         }
     }
     

@@ -46,9 +46,10 @@
 body {
     font-family: "Galindo", sans-serif;
     background-color: #f2f2f2;
-    background-image: url('/esz/background1.png'); 
+    background-image: url('../obrazy/background1.png');
     background-size: cover;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 header {
     background-color: #ec1c24;
